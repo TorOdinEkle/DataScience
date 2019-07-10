@@ -67,3 +67,4 @@ mtcars %>%
 
 
 ## Chapter 20 Vectors
+
