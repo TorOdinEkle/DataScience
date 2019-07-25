@@ -208,22 +208,22 @@ map(x, run_reg)
 
 ## 21.6 Dealing with failure
 
+safe_log <- safely(log)
+str(safe_log(10))
 
+x <- list(1, 10, "a")
+y <- x %>% map(safely(log))
+str(y)
 
+y <- y %>% transpose()
+str(y)
 
+is_ok <- y$error %>% map_lgl(is_null)
+x[!is_ok]
+y$result[is_ok] %>% flatten_dbl()
 
-
-
-
-
-
-
-
-
-
-
-
-
+x <- list(1, 10, "a")
+x %>% map_dbl(possibly(log, NA_real_))
 
 
 
