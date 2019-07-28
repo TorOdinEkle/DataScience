@@ -155,3 +155,55 @@ ggplot(sim1, aes(x = x)) +
   geom_ref_line(h = 0) +
   geom_point(aes(y = resid)) +
   geom_point(aes(y = resid_loess), colour = "red")
+
+## 23.4 Formulas and model families
+
+df <- tribble(
+  ~y, ~x1, ~x2,
+  4, 2, 5,
+  5, 1, 6
+)
+
+model_matrix(df, y ~ x1)
+
+model_matrix(df, y ~ x1 - 1)
+
+model_matrix(df, y ~ x1 + x2)
+
+df <- tribble(
+  ~ sex, ~ response,
+  "male", 1,
+  "female", 2,
+  "male", 1
+)
+model_matrix(df, response ~ sex)
+
+ggplot(sim2) + 
+  geom_point(aes(x, y))
+
+mod2 <- lm(y ~ x, data = sim2)
+
+grid <- sim2 %>% 
+  data_grid(x) %>% 
+  add_predictions(mod2)
+grid
+
+ggplot(sim2, aes(x)) + 
+  geom_point(aes(y = y)) +
+  geom_point(data = grid, aes(y = pred), colour = "red", size = 4)
+
+tibble(x = "e") %>% 
+  add_predictions(mod2)
+
+ggplot(sim3, aes(x1, y)) + 
+  geom_point(aes(colour = x2))
+
+mod1 <- lm(y ~ x1 + x2, data = sim3)
+mod2 <- lm(y ~ x1 * x2, data = sim3)
+
+grid <- sim3 %>% 
+  data_grid(x1, x2) %>% 
+  gather_predictions(mod1, mod2)
+grid
+
+
